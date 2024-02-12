@@ -15,14 +15,20 @@ class _CustomCameraPostionWidgetState extends State<CustomCameraPostionWidget> {
   late GoogleMapController googleMapController;
   double zoomMap = 16;
   Set<Marker> markers = {};
+  Set<Polyline> polyLines = {};
+  Set<Polygon> polygons = {};
+  Set<Circle> circle = {};
   @override
   void initState() {
+    super.initState();
     initialCameraPosition = CameraPosition(
       target: const LatLng(30.527641675593546, 31.046770663274646),
       zoom: zoomMap,
     );
     initMarkers();
-    super.initState();
+    initPloyLines();
+    initPloygons();
+    initCircle();
   }
 
   @override
@@ -37,7 +43,11 @@ class _CustomCameraPostionWidgetState extends State<CustomCameraPostionWidget> {
       child: Stack(
         children: [
           GoogleMap(
+            polylines: polyLines,
+            polygons: polygons,
             markers: markers,
+            circles: circle,
+            zoomControlsEnabled: false,
             initialCameraPosition: initialCameraPosition,
             // cameraTargetBounds: CameraTargetBounds(
             //   LatLngBounds(
@@ -53,7 +63,7 @@ class _CustomCameraPostionWidgetState extends State<CustomCameraPostionWidget> {
           Positioned(
             bottom: 20,
             left: 10,
-            right: 60,
+            right: 10,
             child: ElevatedButton(
               onPressed: () {
                 googleMapController.animateCamera(
@@ -68,7 +78,7 @@ class _CustomCameraPostionWidgetState extends State<CustomCameraPostionWidget> {
           ),
           Positioned(
             bottom: 50,
-            right: 40,
+            right: 10,
             left: 0,
             child: Slider(
               value: zoomMap,
@@ -98,8 +108,9 @@ class _CustomCameraPostionWidgetState extends State<CustomCameraPostionWidget> {
 
   void initMarkers() async {
     var customIconMarker = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(size: Size(100, 50)),
-        'assets/images/download.png');
+      const ImageConfiguration(),
+      'assets/images/download.png',
+    );
     var myMArkers = places
         .map(
           (placesModel) => Marker(
@@ -123,4 +134,79 @@ class _CustomCameraPostionWidgetState extends State<CustomCameraPostionWidget> {
     // );
     // markers.add(getMarker);
   }
+
+  void initPloyLines() {
+    Polyline polyline = const Polyline(
+        zIndex: 1,
+        polylineId: PolylineId('1'),
+        color: Colors.black,
+        endCap: Cap.roundCap,
+        startCap: Cap.roundCap,
+        width: 4,
+        points: [
+          LatLng(30.53221257423452, 31.045874438889175),
+          LatLng(30.52802996034546, 31.049993991437365),
+          LatLng(30.52599136037322, 31.043634708793718),
+          LatLng(30.52130729673009, 31.053438468190322),
+        ]);
+    Polyline polyline1 = const Polyline(
+      zIndex: 2,
+      polylineId: PolylineId('2'),
+      color: Colors.grey,
+      endCap: Cap.roundCap,
+      startCap: Cap.roundCap,
+      width: 4,
+      points: [
+        LatLng(30.52649437203817, 31.05640104008638),
+        LatLng(30.527010631402106, 31.03049379246221),
+      ],
+      patterns: [PatternItem.dot],
+    );
+    polyLines.add(polyline);
+    polyLines.add(polyline1);
+  }
+
+  void initPloygons() {
+    Polygon polygon = Polygon(
+      fillColor: Colors.black.withOpacity(0.2),
+      points: const [
+        LatLng(30.595298507260548, 31.009502630197893),
+        LatLng(30.564051938664328, 31.04163199825233),
+        LatLng(30.532966132162947, 31.008709312468152),
+        LatLng(30.5645642586702, 30.984314792278674),
+        LatLng(30.584371890599467, 30.995024581630155),
+      ],
+      polygonId: const PolygonId('1'),
+      holes: const [
+        [
+          LatLng(30.567733037160764, 31.009297196801757),
+          LatLng(30.553664558326595, 31.01848292247298),
+          LatLng(30.55846497669368, 30.997797509637078),
+        ]
+      ],
+    );
+    polygons.add(polygon);
+  }
+
+  void initCircle() {
+    Circle circles = Circle(
+      fillColor: Colors.black.withOpacity(0.5),
+      circleId: const CircleId('1'),
+      radius: 500,
+      center: const LatLng(30.52358931172052, 31.04735431564734),
+    );
+    circle.add(circles);
+  }
+
+  // Future<Uint8List> getImageFromRawData(String imageUrl, double widht) async {
+  //   var imageData = await rootBundle.load(imageUrl);
+  //   var imageCodec = await ui.instantiateImageCodec(
+  //     imageData.buffer.asUint8List(),
+  //     targetWidth: widht.round(),
+  //   );
+  //   var imageFramInfo = await imageCodec.getNextFrame();
+  //   var imageByData =
+  //       await imageFramInfo.image.toByteData(format: ui.ImageByteFormat.png);
+  //   return imageByData!.buffer.asUint8List();
+  // }
 }

@@ -38,4 +38,9 @@ List<PlacesModel> places = [
     name: 'بيتي',
     latLng: LatLng(30.52802347051582, 31.0457970214283),
   ),
+  const PlacesModel(
+    id: 5,
+    name: 'الشركه اللي مقدم فيها',
+    latLng: LatLng(30.420854726535744, 31.03646947583555),
+  ),
 ];
