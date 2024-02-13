@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pro_google_map/Views/live_location_view.dart';
 import 'package:pro_google_map/models/plases_model.dart';
 
 class CustomCameraPostionWidget extends StatefulWidget {
@@ -93,6 +94,30 @@ class _CustomCameraPostionWidgetState extends State<CustomCameraPostionWidget> {
               },
               label: '$zoomMap',
               divisions: 10,
+            ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              height: 60,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.grey[300],
+              ),
+              child: IconButton(
+                splashColor: Colors.blue,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const LiveLocationView(),
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.location_pin,
+                  size: 40,
+                ),
+              ),
             ),
           ),
         ],
