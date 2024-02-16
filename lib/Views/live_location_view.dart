@@ -6,6 +6,6 @@ class LiveLocationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LiveLocationBodyWidget();
+    return const SafeArea(child: LiveLocationBodyWidget());
   }
 }
